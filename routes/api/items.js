@@ -14,8 +14,12 @@ router.post("/", async (req, res) => {
     name: req.body.name,
   });
 
-  const item = await newItem.save();
-  res.status(200).json(item);
+  try {
+    const item = await newItem.save();
+    res.status(200).json(item);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 router.delete("/:id", async (req, res) => {
@@ -24,7 +28,7 @@ router.delete("/:id", async (req, res) => {
     item.remove();
     res.status(200).send({ success: true });
   } catch (err) {
-    response.status(404).send({success: false, msg: "Could not delete"})
+    response.status(404).send({ success: false, msg: "Could not delete" });
   }
 });
 
